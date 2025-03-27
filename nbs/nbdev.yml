@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "anthropmass"
+  site-url: "https://sannasann.github.io/anthropmass"
+  description: "anthromass nbdev 2"
+  repo-branch: main
+  repo-url: "https://github.com/sannasann/anthropmass"
