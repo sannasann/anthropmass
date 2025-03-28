@@ -1,0 +1,72 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "anthropmass",
+    "section": "",
+    "text": "This file will become your README and also the index of your documentation.",
+    "crumbs": [
+      "anthropmass"
+    ]
+  },
+  {
+    "objectID": "index.html#developer-guide",
+    "href": "index.html#developer-guide",
+    "title": "anthropmass",
+    "section": "Developer Guide",
+    "text": "Developer Guide\nIf you are new to using nbdev here are some useful pointers to get you started.\n\nInstall anthropmass in Development mode\n# make sure anthropmass package is installed in development mode\n$ pip install -e .\n\n# make changes under nbs/ directory\n# ...\n\n# compile to have changes apply to anthropmass\n$ nbdev_prepare",
+    "crumbs": [
+      "anthropmass"
+    ]
+  },
+  {
+    "objectID": "index.html#usage",
+    "href": "index.html#usage",
+    "title": "anthropmass",
+    "section": "Usage",
+    "text": "Usage\n\nInstallation\nInstall latest from the GitHub repository:\n$ pip install git+https://github.com/sannasann/anthropmass.git\nor from conda\n$ conda install -c sannasann anthropmass\nor from pypi\n$ pip install anthropmass\n\n\nDocumentation\nDocumentation can be found hosted on this GitHub repository’s pages. Additionally you can find package manager specific guidelines on conda and pypi respectively.",
+    "crumbs": [
+      "anthropmass"
+    ]
+  },
+  {
+    "objectID": "index.html#how-to-use",
+    "href": "index.html#how-to-use",
+    "title": "anthropmass",
+    "section": "How to use",
+    "text": "How to use\nFill me in please! Don’t forget code examples:\n\n1+1\n\n2",
+    "crumbs": [
+      "anthropmass"
+    ]
+  },
+  {
+    "objectID": "21_anthro_xgboost.html",
+    "href": "21_anthro_xgboost.html",
+    "title": "anthropmass",
+    "section": "",
+    "text": "import pandas as pd\nimport xgboost as xgb\nimport pickle\n\n\n\ntrain=pd.read_csv('../data/processed/ANSURIInormalizedtest.csv')\n\n\ndef make_model(predicted_variable, train, model_type=False):\n    if model_type == 'ardregression':\n        model = linear_model.ARDRegression()\n    elif model_type == 'linearregression':\n        model = linear_model.LinearRegression()\n    elif model_type == 'ridge':\n        model = linear_model.Ridge()\n    elif model_type == 'lasso':\n        model = linear_model.Lasso()\n    elif model_type == 'bayesianridge':\n        model = linear_model.BayesianRidge()\n    else:\n        model = xgb.XGBRegressor(objective='reg:squarederror', n_estimators=100, learning_rate=0.1)\n        \n    x_train = train[['weightkg','stature','Gender']]\n    y_train = train[[predicted_variable]]\n    model.fit(x_train, y_train.values.flatten())\n    return model\n\n\ny_train=train.iloc[:,1:94].drop('weightkg',axis=1).drop('stature',axis=1)\nvariables = y_train.columns[1:2]\nkindofmodel = 'xgb'\nfor var in variables:\n    model = make_model(var, train, kindofmodel)\n    with open(f'../output/anthro_models/xgboost/pickle_{var}_{kindofmodel}','wb') as file:\n        pickle.dump(model,file)",
+    "crumbs": [
+      "21_anthro_xgboost.html"
+    ]
+  },
+  {
+    "objectID": "10_data.html",
+    "href": "10_data.html",
+    "title": "anthropmass",
+    "section": "",
+    "text": "import numpy as np\nimport pandas as pd\nfrom sklearn.model_selection import train_test_split\n\n\n\nRead ansur data\ndivide weight with 10 to get kg\n\ndef read_file():\n    datamale=pd.read_csv('../data/raw/ANSURIIMALEPublic.csv', encoding='latin')  \n    datafemale=pd.read_csv('../data/raw/ANSURIIFEMALEPublic.csv')  \n\n    datafemale = datafemale.rename(columns= {\"SubjectId\":\"subjectid\"}) \n    ansur = pd.concat([datamale, datafemale])\n    ansur['Gender']=ansur['Gender'].map({'Male': 1, 'Female': 0})\n    \n    ansur[\"weightkg\"] = ansur[\"weightkg\"]/10\n    return ansur\n\n\nansur = read_file()\nansur.to_csv('../data/processed/ANSURIImalefemale.csv')\n\n\n\nNormailze\n\ndef normalize_all(data, measurement:list):\n    ansur=read_file()\n    for m in measurement:\n        avg_m = ansur[m].mean()\n        std_m = ansur[m].std()\n        data[m] = (data[m] - avg_m) / std_m\n    return data\n\n\nnormalized = normalize_all(ansur, ['weightkg', 'stature'])\nnormalized.to_csv('../data/processed/ANSURIInormalized.csv')\n\n\n\nTrain and test data\n\ndef make_train_test(data):\n    train, test = train_test_split(data, test_size=.20, shuffle=True, random_state=42)\n    return train, test\n\n\ntrain, test = make_train_test(normalized)\ntrain.to_csv('../data/processed/ANSURIInormalizedtrain.csv')\ntest.to_csv('../data/processed/ANSURIInormalizedtest.csv')",
+    "crumbs": [
+      "Read ansur data"
+    ]
+  },
+  {
+    "objectID": "core.html",
+    "href": "core.html",
+    "title": "core",
+    "section": "",
+    "text": "source\n\nfoo\n\n foo ()",
+    "crumbs": [
+      "core"
+    ]
+  }
+]
